@@ -8,6 +8,7 @@
                  [io.pedestal/pedestal.jetty "0.5.5"]
                  [metosin/reitit-pedestal "0.5.5"]
                  [metosin/reitit "0.5.5"]]
+  :repl-options {:init-ns user}
   :jvm-opts ["-Dclojure.server.myrepl={:port,6666,:accept,clojure.core.server/repl}"]
   :main ^:skip-aot book-desk.core
   :target-path "target/%s"
