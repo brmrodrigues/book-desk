@@ -17,15 +17,11 @@
 (deftest new-bookings-in-db
   (testing "if user is created successfully"
     (let [_ (d/transact conn {:tx-data (fixture/new-users)})
-          ; TODO: floor tx here
-          ; TODO: booking tx here 
-          users (db/users (d/db conn))]
-     (is (< 0 (count users))))))
-
-; CREATED BY AN ADMIN USER
-[10 :floor/number 3]
-[10 :floor/size 100]
-
-; CREATED BY USER
-[30 :booking/floor 10] ;; reference many-to-one
-[30 :booking/user 20]
+          _ (d/transact conn {:tx-data fixture/floors})
+          users (db/users (d/db conn))
+          floors (db/floors (d/db conn))
+          _ (->> (db/booking-tx (ffirst users) (ffirst floors))
+                 (assoc {} :tx-data)
+                 (d/transact conn))
+          bookings (db/bookings (d/db conn))]
+     (is (< 0 (count bookings))))))

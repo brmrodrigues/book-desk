@@ -33,14 +33,36 @@
 
              ;Booking
              {:db/ident :booking/user
-              :db/valueType :db.type/ref
-              :db/cardinality :db.cardinality/one}
+              :db/valueType :db.type/uuid
+              :db/cardinality :db.cardinality/one
+              :db/doc "User UUID related to the booked desk"}
              {:db/ident :booking/floor
-              :db/valueType :db.type/ref
-              :db/cardinality :db.cardinality/one}])
+              :db/valueType :db.type/long
+              :db/cardinality :db.cardinality/one
+              :db/doc "Floor related to the booking"}])
 
 (defn users [db]
   (d/q '[:find ?user-id
          :where
          [?u :user/id ?user-id]]
        db))
+
+(defn floors [db]
+  (d/q '[:find ?floor-number
+         :where
+         [?f :floor/number ?floor-number]]
+       db))
+
+(defn bookings [db]
+  (d/q '[:find ?booking-floor ?booking-user
+         :where
+         [?b :booking/user ?booking-user]
+         [?b :booking/floor ?booking-floor]]
+       db))
+
+(defn booking-tx
+  [user-id
+   floor-number]
+  (-> [{:booking/floor floor-number
+        :booking/user user-id}]))
+        
