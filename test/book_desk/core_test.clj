@@ -25,3 +25,4 @@
                  (d/transact conn))
           bookings (db/bookings (d/db conn))]
      (is (< 0 (count bookings))))))
+
