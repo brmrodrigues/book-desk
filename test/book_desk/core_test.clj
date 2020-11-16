@@ -14,6 +14,7 @@
 (d/transact conn {:tx-data db/schema})
 #_(d/delete-database client {:db-name "book-desk"})
 
+
 (deftest new-bookings-in-db
   (testing "if user is created successfully"
     (let [_ (d/transact conn {:tx-data (fixture/new-users)})
